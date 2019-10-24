@@ -8,7 +8,7 @@ $_SESSION['id'] = $_POST['patient_id'];
 }
 else
 {
-var_dump('toto');
+echo '';
 }
 ?>
 <!DOCTYPE html>
@@ -18,7 +18,7 @@ var_dump('toto');
 <title>PDO</title>
 </head>
 <body>
-<p><a href="index2.php">Accueil</a><a href="ajout-patient.php">Ajouter un patient</a></p>
+<p><a href="index2.php">Accueil</a><a href="liste-patients.php">Retour liste des patients</a></p>
 <?php
 
 if(isset($_SESSION['id']))
@@ -39,6 +39,8 @@ if(isset($_SESSION['id']))
         // Si tout va bien, on peut continuer
         // On récupère tout le contenu de la table
         $reponse_profil = $bdd2->query('SELECT * FROM patients WHERE id ='.$detail.'');
+        $reponse_app = $bdd2->query('SELECT appointments.id,dateHour,lastName FROM appointments INNER JOIN patients ON appointments.idPatients=patients.id WHERE patients.id ='.$detail.'');
+        $donnees_app = $reponse_app->fetchall();
 
         while ($donnees_patients = $reponse_profil->fetch())
         { ?>
@@ -58,13 +60,16 @@ if(isset($_SESSION['id']))
         </form>
         <!-- Fin du formulaire -->
          <?php }
+        // Rdv
+        foreach ($donnees_app as $rdv) : ?>
+        <p>Mr <?= $rdv['lastName'] ?> a pris rendez-vous le : <?= $rdv['dateHour'] ?></p>
+        <?php endforeach;
 
         // Validation des données du formulaire
 
-        if(true)
-        // if (isset($_POST["uppatient"])&& isset($_POST["uplastname"])&& isset($_POST["upfirstname"]) && isset($_POST["upbirthdate"]) && isset($_POST["upmail"]) && isset($_POST["upphone"]) && isset($_POST['id']))
-        {
-        
+        //if(true)
+        if (isset($_POST["uppatient"])&& isset($_POST["uplastname"])&& isset($_POST["upfirstname"]) && isset($_POST["upbirthdate"]) && isset($_POST["upmail"]) && isset($_POST["upphone"]) && isset($_POST['upid']))
+        {       
         //
         $lastname = $_POST['uplastname'];
         $firstname = $_POST['upfirstname'];
@@ -79,7 +84,6 @@ if(isset($_SESSION['id']))
         //
         // Exécution de la requête
         //
-     
         $req->execute(array(
             'uplastname' => $lastname,
             'upfirstname' => $firstname,
@@ -88,24 +92,24 @@ if(isset($_SESSION['id']))
             'upphone' => $phone,
             'upid' => $id
         ));
+        echo 'Le patient a bien été mis à jour !';
         //header('Location: ok_patient.php'); 
 
         // Fermeture de la session
         //
-        mysqli_close($bdd2);
+        //mysqli_close($bdd2);
 
     }
-else
-{
+    else
+    {
     echo "";
-}
+    }
 
         $reponse_profil->closeCursor(); // Termine le traitement de la requête       
 }
 else
 {
-    echo "détails patient inconnu...";
-   
+    echo "détails patient inconnu...";  
 }
 ?>
 </body>

@@ -23,7 +23,7 @@ catch(Exception $e)
 }
 // Si tout va bien, on peut continuer
 // On récupère tout le contenu de la table
-$reponse_app = $bdd->query('SELECT appointments.id,dateHour,lastName FROM appointments INNER JOIN patients ON appointments.id=patients.id');
+$reponse_app = $bdd->query('SELECT appointments.id,dateHour,lastName FROM appointments INNER JOIN patients ON appointments.idPatients=patients.id');
 $donnees_app = $reponse_app->fetchall();
 ?>
 <?php foreach($donnees_app as $app) : ?>
@@ -32,8 +32,20 @@ $donnees_app = $reponse_app->fetchall();
 <input type="text" name="rdv_id" value="<?= $app['id'] ?>" hidden />
 <input type="submit" name="details" value="infos" />
 </form>
+<form method="post" action="">
+<input type="text" name="rdv_id" value="<?= $app['id'] ?>" hidden />
+<input type="submit" name="delete" value="supprimer" />
+</form>
 </p>
 <?php endforeach ?>
+<?php if (isset($_POST['delete']) && isset($_POST['rdv_id']))
+{
+    $del = $bdd->prepare('DELETE FROM appointments WHERE id='.$_POST['rdv_id'].'');
+    $del->bindValue(':id', $_POST['rdv_id']);
+    $del->execute();
+    header('Location: del_rdv.php');;
+}
+?>
 <?php $reponse_app->closeCursor(); // Termine le traitement de la requête ?>
 </body>
 </html>

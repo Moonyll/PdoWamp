@@ -17,7 +17,7 @@ echo '';
 <title>PDO</title>
 </head>
 <body>
-<p><a href="index2.php">Accueil</a></p>
+<p><a href="index2.php">Accueil</a><a href="liste-rdv.php">Retour liste des rendez-vous</a></p>
 <?php
 try
 {
@@ -32,12 +32,12 @@ catch(Exception $e)
 // Si tout va bien, on peut continuer
 // On récupère tout le contenu de la table
 $id_app = $_SESSION['id'];
-$reponse_det_app = $bdd->query('SELECT appointments.id,dateHour,lastName,firstName FROM appointments INNER JOIN patients ON appointments.id=patients.id WHERE appointments.id = '.$id_app.'');
+$reponse_det_app = $bdd->query('SELECT appointments.id,dateHour,lastName,firstName FROM appointments INNER JOIN patients ON appointments.idPatients=patients.id WHERE appointments.id = '.$id_app.'');
 $donnees_det_app = $reponse_det_app->fetchall();
 ?>
 <?php foreach($donnees_det_app as $app) : ?>
-<p>Information sur le rendez-vous du patient <?= $app['lastName']?></p>
-<p>Mr <?= $app['lastName']?> <?= $app['firstName'] ?> a pris rendez-vous le :
+<p>** Information sur le rendez-vous du patient <?= $app['lastName']?> **</p>
+<p>Pour informations, Mr <?= $app['lastName']?> <?= $app['firstName'] ?> a pris rendez-vous le :
 <form method="post" action="">
     <input type="text" name="up_rdv_id" value ="<?= $app['id'] ?>" hidden/>
     <input type="text" name="up_rdv_date" value ="<?= $app['dateHour'] ?>" />

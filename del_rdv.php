@@ -5,8 +5,8 @@
 <title>PDO</title>
 </head>
 <body>
-<?php echo "Le rdv a bien été ajouté !";
+<?php echo "Le rdv a bien été supprimé !";
 ?>
-<p><a href="index2.php">Retour Accueil</a></p>
+<p><a href="liste-rdv.php">Retour à la liste des rendez-vous</a></p>
 </body>
 </html>
