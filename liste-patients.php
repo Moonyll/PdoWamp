@@ -1,44 +1,37 @@
 <?php
 // On démarre la session AVANT d'écrire du code HTML
 session_start();
-try
-{
-    // On se connecte à MySQL
-	$bdd = new PDO('mysql:host=localhost;dbname=hospitalE2N;charset=utf8', 'root', '');
-}
-catch(Exception $e)
-{
-	// En cas d'erreur, on affiche un message et on arrête tout
-        die('Erreur : '.$e->getMessage());
-}
-// Si tout va bien, on peut continuer
-
-  if(isset($_GET['user']))
-  {
-    $user = (String) trim($_GET['user']);
-
-    $req = $bdd->query('SELECT * FROM patients WHERE lastname LIKE ? LIMIT 10', array("$user%"));
-    $req = $req->fetchall();
-  
-        foreach($req as $pat)
-        { ?>   
-            <div style="margin-top: 20px 0; border-bottom: 2px solid #ccc"><?= $pat['lastname'] . " " . $pat['firstname'] ?></div><?php    
-        }
-  } 
 ?>
 <!DOCTYPE html>
 <html>
 <head>
 <link rel="stylesheet" type="text/css" href="style.css">
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+    $("button").click(function(){
+        $.get("date-time.php", function(data){
+            // Display the returned data in browser
+            $("#result").html(data);
+        });
+    });
+});
+</script>
 <title>PDO</title>
 </head>
 <body>
-
+<!-- Date Ajax-->
+<div id="result">
+  <p></p>
+</div>
+<button type="button">Afficher la date & l'heure</button>
 <!-- Barre de recherche-->
-<form method=get action="">
-    <input class="form-control" type="text" id="search-user" value="" placeholder="Recherche patient"/>
-    <div id="result-search"></div> <!-- C'est ici que nous aurons nos résultats de notre recherche -->
+<p>
+<form>
+Rechercher patient :<input type="text" placeholder="prenom" onkeyup="showFoundPatient(this.value)">
 </form>
+</p>
+<p>Résultat: <span id="searchPatient"></span></p>
 <!-- Barre de recherche-->
 <p><a href="index2.php">Accueil</a><a href="ajout-patient.php">Ajouter un patient</a></p>
 <?php
@@ -86,29 +79,21 @@ if (isset($_POST['delpat']) && isset($_POST['patient_id']))
 $reponse_patients->closeCursor(); // Termine le traitement de la requête
 ?>
 </body>
-<script>
-  $(document).ready(function(){
-    $('#search-user').keyup(function(){
-      $('#result-search').html('');
-
-      var patient = $(this).val();
-
-      if(patient != ""){
-        $.ajax({
-          type: 'GET',
-          url: 'fonctions/recherche_utilisateur.php',
-          data: 'user=' + encodeURIComponent(patient),
-          success: function(data){
-            if(data != ""){
-              $('#result-search').append(data);
-            }else{
-              document.getElementById('result-search').innerHTML = "<div style='font-size: 20px; text-align: center; margin-top: 10px'>Aucun utilisateur</div>"
-            }
-          }
-        });
+<script> 
+function showFoundPatient(searchEntry) {
+  if (searchEntry.length == 0) {
+    document.getElementById("searchPatient").innerHTML = "";
+    return;
+  } else {
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        document.getElementById("searchPatient").innerHTML = this.responseText;
       }
-    });
-  });
+    };
+    xmlhttp.open("GET", "trouvepatient.php?q=" + searchEntry, true);
+    xmlhttp.send();
+  }
+}
 </script>
-
 </html>
