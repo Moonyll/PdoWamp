@@ -11,6 +11,7 @@
 <p><a href="ajout-patient.php">B. Ajouter un patient</a></p>
 <p><a href="liste-rdv.php">C. Liste des rendez-vous</a></p>
 <p><a href="ajout-rendezvous.php">D. Nouveau rendez-vous</a></p>
+<p><a href="ajout-patient-v2.php">Bonus. Ajouter un patient</a></p>
 </body>
 </html>
 

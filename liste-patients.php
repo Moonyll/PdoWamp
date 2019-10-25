@@ -9,10 +9,15 @@ session_start();
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-    $("button").click(function(){
-        $.get("date-time.php", function(data){
-            // Display the returned data in browser
-            $("#result").html(data);
+    $("button").click(function(e){
+        $.ajax({
+          url :'date-time.php',
+          type: 'GET',
+          dataType : 'html',
+          success : function(data, statut)
+          {
+            $("#result").html(data); 
+          }
         });
     });
 });
