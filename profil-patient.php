@@ -38,6 +38,7 @@ if(isset($_SESSION['id']))
         }
         // Si tout va bien, on peut continuer
         // On récupère tout le contenu de la table
+       
         $reponse_profil = $bdd2->query('SELECT * FROM patients WHERE id ='.$detail.'');
         $reponse_app = $bdd2->query('SELECT appointments.id,dateHour,lastName FROM appointments INNER JOIN patients ON appointments.idPatients=patients.id WHERE patients.id ='.$detail.'');
         $donnees_app = $reponse_app->fetchall();

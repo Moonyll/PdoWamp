@@ -53,7 +53,12 @@ catch(Exception $e)
 // Si tout va bien, on peut continuer
 // On récupère tout le contenu de la table
 $reponse_patients = $bdd->query('SELECT * FROM patients');
+//
+$number_pat = $bdd->query('SELECT COUNT(*) AS total FROM patients');
+$nb_pat=$number_pat->fetch();
 
+echo 'L\'hopital compte '.$nb_pat['total'].' patients au total.';
+//
 while ($donnees_patients = $reponse_patients->fetch())
 { ?>
 <p> Nom : <?= $donnees_patients['lastname'] ?> </p>
