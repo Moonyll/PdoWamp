@@ -7,6 +7,6 @@
 <body>
 <?php echo "Le nouveau patient a bien été ajouté !";
 ?>
-<p><a href="index2.php">Retour Accueil</a></p>
+<p><a href="homeHospital.php">Retour Accueil</a></p>
 </body>
 </html>

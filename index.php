@@ -6,7 +6,7 @@
 </head>
 <body>
 <h1>PDO - Partie N°1 : Lire Les données<a href="index2.php"></h1>
-<h3><a href="index2.php">Vers PDO - Partie N°2 - Ecrire les données </a></h3>
+<h3><a href="homeHospital.php">Vers PDO - Partie N°2 - Ecrire les données </a></h3>
 <?php
 try
 {
