@@ -11,7 +11,7 @@ $reponse_app = $bdd->query('SELECT appointments.id,dateHour,lastName FROM appoin
 $donnees_app = $reponse_app->fetchall();
 
 // ** Détail d'un rendez-vous **
-$id_app = $_SESSION['id'];
+$id_app = isset($_SESSION['id']) ? $_SESSION['id'] : 1;
 $reponse_det_app = $bdd->query('SELECT appointments.id,dateHour,lastName,firstName FROM appointments INNER JOIN patients ON appointments.idPatients=patients.id WHERE appointments.id = '.$id_app.'');
 $donnees_det_app = $reponse_det_app->fetchall();
 

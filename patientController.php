@@ -11,7 +11,7 @@ $number_pat = $bdd->query('SELECT COUNT(*) AS total FROM patients');
 $nb_pat = $number_pat->fetch();
 
 // ** Profil patient **
-$detail = $_SESSION['id'];
+$detail = (isset($_SESSION['id'])) ? $_SESSION['id'] : 1;
 $reponse_profil = $bdd->query('SELECT * FROM patients WHERE id =' . $detail . '');
 $reponse_app = $bdd->query('SELECT appointments.id,dateHour,lastName FROM appointments INNER JOIN patients ON appointments.idPatients=patients.id WHERE patients.id =' . $detail . '');
 $donnees_app = $reponse_app->fetchall();
@@ -50,6 +50,6 @@ if (isset($_POST['delpat']) && isset($_POST['patient_id']))
   $del_pat->execute();
 
   // Redirection vers la page de confirmaton :
-  header('Location: viewDelPatientOK.php');;
+  header('Location: viewDelPatientOK.php');
 }
 ?>
